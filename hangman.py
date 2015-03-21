@@ -2,16 +2,114 @@ from random import randint
 
 words = [
         "chocolate",
-        "ice-cream",
+        "icecream",
         "cupcake"
         ]
 
-word = words[randint(0,2)]
+word = words[randint(0,len(words)-1)]
 guessed = False
-lives = 6
 guess = ['_ '] * len(word)
 errors = []
 
+hangman = [
+""""
+------
+|    |
+|
+|
+|
+|
+|
+|
+|
+------
+""",
+""""
+------
+|    |
+|    0
+|
+|
+|
+|
+|
+|
+------
+""",
+""""
+------
+|    |
+|    0
+|   -+-
+|
+|
+|
+|
+|
+------
+""",
+""""
+------
+|    |
+|    0
+|  /-+-
+|
+|
+|
+|
+|
+------
+""",
+
+""""
+------
+|    |
+|    0
+|  /-+-/
+|    |
+|    
+|   
+|
+|
+------
+""",
+""""
+------
+|    |
+|    0
+|  /-+-/
+|    |
+|    | 
+|   
+|
+|
+------
+""",
+""""
+------
+|    |
+|    0
+|  /-+-/
+|    |
+|    | 
+|   /
+|
+|
+------
+""",
+""""
+------
+|    |
+|    0
+|  /-+-/
+|    |
+|    | 
+|   / \\
+|
+|
+------
+"""
+]
 
 def is_in_word(current_letter):
     in_word = False
@@ -25,22 +123,21 @@ def is_in_word(current_letter):
 
 
 print "welcome to hangman!"
-print "the word has {} letters".format(len(word))
+print hangman[0]
+print "".join(guess)
 while not guessed:
-    print "{} lives".format(lives)
     print "errors: {}".format(",".join(errors))
     current_letter = raw_input("guess a letter:\n")
     if current_letter not in errors and current_letter not in guess:
-        if not is_in_word(current_letter.lower()):
-            lives -= 1
+        is_in_word(current_letter.lower())
         print "".join(guess)
+        print hangman[len(errors)]
         if '_ ' not in guess:
             guessed = True
             print "Congrats, you win"
-        if lives == 0:
-            print "too bad, you're dead"
+        if len(errors) == len(hangman) - 1:
+            print "too bad, you're dead. the word was {}".format(word)
             break
     else:
         print "you've already guessed {}".format(current_letter)
-
 
